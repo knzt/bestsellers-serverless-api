@@ -1,0 +1,19 @@
+{
+  "name": "bestsellers-serverless-api",
+  "version": "1.0.0",
+  "description": "aws lambda serverless api to list amazon top sales",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "knzt",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "ts-node": "^10.9.2"
+  }
+}
