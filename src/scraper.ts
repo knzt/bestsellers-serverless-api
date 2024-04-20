@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import { Product } from '@/entities/product';
 
-(async () => {
+const scrapeTopSellers = async () => {
   const browser = await puppeteer.launch({
     headless: false,
     defaultViewport: null,
@@ -38,7 +38,8 @@ import { Product } from '@/entities/product';
     return products;
   });
 
-  console.log(topSellers);
-
   await browser.close();
-})();
+  return topSellers;
+};
+
+export default scrapeTopSellers;
