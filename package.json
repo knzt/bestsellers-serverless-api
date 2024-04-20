@@ -13,7 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "puppeteer": "^22.6.5",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "zod": "^3.22.5"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",

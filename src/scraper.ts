@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import { Product } from '@/entities/product';
 
 (async () => {
   const browser = await puppeteer.launch({
@@ -13,18 +14,24 @@ import puppeteer from 'puppeteer';
   });
 
   const topSellers = await page.evaluate(() => {
-    const products = [];
+    const products: Product[] = [];
 
     const infos = Array.from(
       document.querySelectorAll('.zg-carousel-general-faceout'),
     ).slice(0, 3);
+
     for (const info of infos) {
       const price = info?.querySelector('.a-color-price span')?.textContent;
       const title = info?.querySelector('.a-link-normal span div')?.textContent;
       const url = info?.querySelector('a')?.href;
       const rate = info?.querySelector('.a-icon-alt')?.textContent;
 
-      const product = { title: title, price: price, rate: rate, url: url };
+      const product: Product = {
+        title: title || 'indisponível',
+        price: price || 'indisponível',
+        rate: rate || 'indisponível',
+        url: url || 'indisponível',
+      };
       products.push(product);
     }
 
