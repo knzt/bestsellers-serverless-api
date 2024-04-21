@@ -17,20 +17,24 @@ const scrapeTopSellers = async () => {
     const topSellers = await page.evaluate(() => {
       const products: Product[] = [];
 
-      const infos = Array.from(
+      const cards = Array.from(
         document.querySelectorAll('.zg-carousel-general-faceout'),
       ).slice(0, 3);
 
-      for (const info of infos) {
-        const priceString = info?.querySelector(
+      if (!cards.length) {
+        throw new Error('cards not found');
+      }
+
+      for (const card of cards) {
+        const priceString = card.querySelector(
           '.a-color-price span',
         )?.textContent;
-        const rateString = info?.querySelector('.a-icon-alt')?.textContent;
+        const rateString = card.querySelector('.a-icon-alt')?.textContent;
 
-        const title = info?.querySelector(
+        const title = card.querySelector(
           '.a-link-normal span div',
         )?.textContent;
-        const url = info?.querySelector('a')?.href;
+        const url = card.querySelector('a')?.href;
 
         const price = priceString
           ? parseFloat(
