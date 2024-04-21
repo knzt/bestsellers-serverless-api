@@ -22,17 +22,29 @@ const scrapeTopSellers = async () => {
       ).slice(0, 3);
 
       for (const info of infos) {
-        const price = info?.querySelector('.a-color-price span')?.textContent;
+        const priceString = info?.querySelector(
+          '.a-color-price span',
+        )?.textContent;
+        const rateString = info?.querySelector('.a-icon-alt')?.textContent;
+
         const title = info?.querySelector(
           '.a-link-normal span div',
         )?.textContent;
         const url = info?.querySelector('a')?.href;
-        const rate = info?.querySelector('.a-icon-alt')?.textContent;
+
+        const price = priceString
+          ? parseFloat(
+              priceString.replace('R$', '').replace('.', '').replace(',', '.'),
+            )
+          : null;
+        const rate = rateString
+          ? parseFloat(rateString.split(' ')[0].replace(',', '.'))
+          : null;
 
         const product: Product = {
           title: title || 'indisponível',
-          price: price || 'indisponível',
-          rate: rate || 'indisponível',
+          price: price,
+          rate: rate,
           url: url || 'indisponível',
         };
         products.push(product);
