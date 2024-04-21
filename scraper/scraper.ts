@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer';
-import { Product } from '@/entities/product';
+import { Product } from './entities/product';
 
 const scrapeTopSales = async () => {
   const browser = await puppeteer.launch({

@@ -1,0 +1,12 @@
+{
+    "name": "scraper",
+    "version": "1.0.0",
+    "main": "scraper.ts",
+    "scripts": {
+
+    },
+    "dependencies": {
+      "puppeteer": "^22.6.5",
+      "zod": "^3.22.5"
+    }
+  }
