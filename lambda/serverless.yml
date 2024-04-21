@@ -1,11 +1,11 @@
-service: bestsellers-scraper
+service: bestsellers-api
 
 provider:
   name: aws
   runtime: nodejs18.x
   region: us-east-1
   environment:
-    DYNAMODB_TABLE: 'topsales'
+    DYNAMODB_TABLE: 'bestsellers'
   iam:
     role:
       statements:
@@ -16,7 +16,7 @@ provider:
 
 functions:
   saveScrapeTopSalesData:
-    handler: handler.handler
+    handler: handler.exportBestsellers
 resources:
   Resources:
     topsales:
