@@ -4,6 +4,7 @@
   "description": "aws lambda serverless api to list amazon top sales",
   "main": "index.js",
   "scripts": {
+    "dev": "ts-node src/scraper.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/**/*.ts --fix"
   },
@@ -11,7 +12,9 @@
   "author": "knzt",
   "license": "ISC",
   "dependencies": {
-    "typescript": "^5.4.5"
+    "puppeteer": "^22.6.5",
+    "typescript": "^5.4.5",
+    "zod": "^3.22.5"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
