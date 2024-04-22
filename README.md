@@ -12,6 +12,10 @@ Tecnologias utilizadas:
   - Banco de dados utilizado para armazenar os produtos.
 - AWS ApiGateway
   - Utilizado para expor o acesso às Lambdas, criando rotas HTTP públicas, permitindo gerenciar políticas de acesso.
+ 
+desenho de arquitetura inicial: 
+
+![Desenho de arquitetura](https://github.com/knzt/bestsellers-serverless-api/blob/main/docs/arquitetura.jpeg)
 
 ## Estrutura
 
@@ -142,6 +146,17 @@ Certifique-se que suas credenciais da aws estejam configuradas, e de que o produ
 
 ```bash
   npm run invoke <functionName>
+```
+As funções ta,bém podem ser testadas localmente
+
+```bash
+  npm run local <functionName>
+```
+
+E no caso da função getProductByID, que requer o uso o api gateway para obter o parâmetro via id, pode usar o id fornecido no arquivo event.json
+
+```bash
+  npm run local <functionName> -p event.json
 ```
 
 ## Screenshots
