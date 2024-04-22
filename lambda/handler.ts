@@ -4,9 +4,9 @@ import { Product, products } from './products';
 import { v4 as uuidv4 } from 'uuid';
 
 const bestsellers = JSON.parse(JSON.stringify(products));
+const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.exportBestsellers = async () => {
-  const dynamoDb = new AWS.DynamoDB.DocumentClient();
   const promises = bestsellers.map((product: Product) => {
     const params = {
       TableName: process.env.DYNAMODB_TABLE as string,
@@ -31,7 +31,6 @@ module.exports.exportBestsellers = async () => {
 
   try {
     await Promise.all(promises);
-    console.log('All products saved successfully.');
     return {
       statusCode: 200,
       body: JSON.stringify({ message: 'Data stored successfully' }),
@@ -42,6 +41,32 @@ module.exports.exportBestsellers = async () => {
       statusCode: 500,
       body: JSON.stringify({
         error: 'Failed to store data',
+        details: error,
+      }),
+    };
+  }
+};
+
+module.exports.getBestsellers = async () => {
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE as string,
+  };
+
+  try {
+    const data = await dynamoDb.scan(params).promise();
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: 'Bestsellers table data retrieved successfully',
+        data: data.Items,
+      }),
+    };
+  } catch (error) {
+    console.error('Error retrieving data from DynamoDB:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'Failed to retrieve data',
         details: error,
       }),
     };

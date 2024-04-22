@@ -12,11 +12,18 @@ provider:
         - Effect: Allow
           Action:
             - dynamodb:PutItem
+            - dynamodb:Scan
           Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}'
 
 functions:
   saveScrapeTopSalesData:
     handler: handler.exportBestsellers
+  getBestsellers:
+    handler: handler.getBestsellers
+    events:
+      - http:
+          path: bestsellers
+          method: get
 resources:
   Resources:
     topsales:
