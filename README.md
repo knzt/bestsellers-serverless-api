@@ -1,4 +1,15 @@
-# Amazon BestSellers
+##  Índice
+
+1. [Introdução](#introducao) 
+2. [Estrutura](#estrutura)
+3. [Api Reference](#api-reference) 
+4. [Instalação](#instalacao) 
+5. [Scraper](#scraper)
+6. [Conheça as Funções](#conheca-as-funcoes)
+7. [Executar Funções](#executar-funcoes)
+8. [Screenshots](#screenshots)
+
+# <a id="introducao"> Amazon BestSellers </a>
 
 Este projeto busca os 3 produtos mais vendidos da página de best-sales da Amazon, armazena e disponibiliza para consumo através de API.
 
@@ -12,12 +23,20 @@ Tecnologias utilizadas:
   - Banco de dados utilizado para armazenar os produtos.
 - AWS ApiGateway
   - Utilizado para expor o acesso às Lambdas, criando rotas HTTP públicas, permitindo gerenciar políticas de acesso.
+- Node.js
+  - Ambiente de execução de JavaScript no lado do servidor, fundamental para a criação de aplicações escaláveis.
+- TypeScript
+  - Superset de JavaScript que adiciona tipos à linguagem, facilitando a manutenção do código.
+- Puppeteer
+  - Biblioteca utilizada para scraping dos 3 primeiros produtos listados na página https://www.amazon.com.br/bestsellers.
+- Serverless Framework
+  - Framework utilizado para facilitar o desenvolvimento dos recursos necessários para api, como as funções Lambda e as rotas ApiGateway.
  
-desenho de arquitetura inicial: 
+#### Desenho de arquitetura inicial, pré-projeto, considerando as tecnologias de nuvem que seriam utilizadas: 
 
 ![Desenho de arquitetura](https://github.com/knzt/bestsellers-serverless-api/blob/main/docs/arquitetura.jpeg)
 
-## Estrutura
+## <a id="estrutura">  Estrutura </a>
 
 Para facilitar revisão e manutenção, por ser um projeto pequeno, foi decidida a utilização de um MonoRepo, onde tanto o Scraper que é executado localmente, quanto o Framework Serverless estão no mesmo repositório e partilham dependencias comuns de desenvolvimento, como Linter e Formatter.
 
@@ -37,7 +56,7 @@ Os arquivos e suas responsabilidades estão dispostos da seguinte forma:
     |   |   product.ts    // Modelagem do objeto Produto
 ```
 
-## API Reference
+## <a id="api-reference"> API Reference </a> 
 
 URL Base:
 
@@ -91,11 +110,11 @@ URL Base:
 }
 ```
 
-## Instalação
+## <a id="instalacao"> Instalação </a>
 
 - Instale as dependencias com Npm
-
-- Caso não tenha o ts-node instalado globalmente, será necessário substituir as referências do comando pelo caminho absoluto:
+  
+- Caso não tenha o ts-node instalado globalmente, será necessário substituir as referências do comando pelo caminho absoluto, como no exemplo:
 
 ```bash
   ./node_modules/.bin/ts-node
@@ -112,7 +131,7 @@ URL Base:
   npm install
 ```
 
-## Executando o Scraper
+##  <a id="scraper"> Executando o Scraper </a>
 
 no diretório raiz do projeto, usando o script Bash:
 
@@ -121,7 +140,7 @@ no diretório raiz do projeto, usando o script Bash:
 ```bash
   ./run_scraper.sh
 ```
--Em caso de timeout, tente novamente após um minuto.
+- Em caso de timeout, tente novamente após um minuto.
 A instrução acima, caso o script seja executado sem erro, vai substituir o arquivo 'api/products.json' por um novo, com os dados retornados do scraper.
 
 uma alternativa ao script, é executar o scraper manualmente.
@@ -133,7 +152,37 @@ uma alternativa ao script, é executar o scraper manualmente.
 ```
 - Copie os dados impressos no console, e colar no arquivo 'api/products.json'
 
-## Executando as funções lambdas
+## <a id="conheca-as-funcoes"> Funções lambda </a>
+
+```bash
+# serverless.yml
+functions:
+  exportBestsellersData:
+    handler: handler.exportBestsellers
+  getBestsellers:
+    handler: handler.getBestsellers
+    events:
+      - http:
+          path: bestsellers
+          method: get
+  getProductById:
+    handler: handler.getProductById
+    events:
+      - http:
+          path: bestsellers/{id}
+          method: get
+```
+#### exportBestsellersData
+- alimenta uma tabela no dynamodb com os dados do arquivo 'products.json' (registrados após a execução do scraper localmente)
+- antes de enviar os dados para o banco, cria um id único para cada produto, utilizando a biblioteca 'uui'
+   
+#### getBestsellers
+- Faz uma busca na tabela do dynamodb e retorna os dados encontrados
+  
+#### 
+- Faz uma busca na tabela do dynamodb, utilizando o id passado como parâmetro na url, e retorna o produto encontrado
+
+## <a id="executar-funcoes"> Executando as funções lambdas </a>
 
 Certifique-se que suas credenciais da aws estejam configuradas, e de que o productjs.json existe
 
@@ -153,19 +202,19 @@ Certifique-se que suas credenciais da aws estejam configuradas, e de que o produ
 ```bash
   npm run invoke <functionName>
 ```
-As funções ta,bém podem ser testadas localmente
+As funções também podem ser testadas localmente
 
 ```bash
   npm run local <functionName>
 ```
 
-E no caso da função getProductByID, que requer o uso o api gateway para obter o parâmetro via id, pode usar o id fornecido no arquivo event.json
+E no caso da função getProductByID, que requer o uso o api gateway para obter o id via pathParams, pode usar o id fornecido no arquivo event.json
 
 ```bash
   npm run local <functionName> -p event.json
 ```
 
-## Screenshots
+##  <a id="screenshots"> Screenshots </a> 
 Screenshot da tela de produtos no momento em que foi feito o scraper dos produtos disponíveis na url comartilhada nesse repositório:
 
 ![Screenshot da tela de produtos no momento em que foi feito o scraper dos produtos disponíveis na url comartilhada nesse repositório](https://github.com/knzt/bestsellers-serverless-api/blob/main/docs/scraped_page.jpeg)
