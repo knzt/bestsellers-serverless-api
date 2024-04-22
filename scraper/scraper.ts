@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
-import { Product } from '@/entities/product';
+import { Product } from './entities/product';
 
-const scrapeTopSellers = async () => {
+const scrapeTopSales = async () => {
   const browser = await puppeteer.launch({
     headless: true,
     defaultViewport: null,
@@ -50,6 +50,7 @@ const scrapeTopSellers = async () => {
           price: price,
           rate: rate,
           url: url || 'indisponível',
+          date: new Date().toISOString(),
         };
         products.push(product);
       }
@@ -60,10 +61,10 @@ const scrapeTopSellers = async () => {
     return topSellers;
   } catch (error) {
     console.error('Scraping error:', error);
-    return [];
+    return;
   } finally {
     await browser.close();
   }
 };
 
-export default scrapeTopSellers;
+export default scrapeTopSales;

@@ -5,6 +5,7 @@ export const productSchema = z.object({
   price: z.number().nullable(),
   rate: z.number().nullable(),
   url: z.string(),
+  date: z.string(),
 });
 
 export type Product = z.infer<typeof productSchema>;

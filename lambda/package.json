@@ -1,0 +1,15 @@
+{
+  "name": "lambda-handler",
+  "version": "1.0.0",
+  "main": "handler.ts",
+  "scripts": {
+    "deploy": "serverless deploy"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1603.0",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.8"
+  }
+}
