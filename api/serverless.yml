@@ -12,6 +12,7 @@ provider:
         - Effect: Allow
           Action:
             - dynamodb:PutItem
+            - dynamodb:GetItem
             - dynamodb:Scan
           Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}'
 
@@ -23,6 +24,12 @@ functions:
     events:
       - http:
           path: bestsellers
+          method: get
+  getProductById:
+    handler: handler.getProductById
+    events:
+      - http:
+          path: bestsellers/{id}
           method: get
 resources:
   Resources:

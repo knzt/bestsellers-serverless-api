@@ -79,3 +79,42 @@ module.exports.getBestsellers = async () => {
     };
   }
 };
+
+module.exports.getProductById = async (event: {
+  pathParameters: { id: string };
+}) => {
+  const id = event.pathParameters.id;
+
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE as string,
+    Key: {
+      id: id,
+    },
+  };
+
+  try {
+    const { Item } = await dynamoDb.get(params).promise();
+    if (!Item) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Product not found' }),
+      };
+    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: 'Success',
+        product: Item,
+      }),
+    };
+  } catch (error) {
+    console.error('Error retrieving product:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'Failed to retrieve product',
+        details: error,
+      }),
+    };
+  }
+};
