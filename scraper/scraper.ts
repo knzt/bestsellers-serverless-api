@@ -55,7 +55,7 @@ const scrapeTopSales = async () => {
         products.push(product);
       }
 
-      return products;
+      return JSON.stringify(products, null, 2);
     });
 
     return topSellers;
@@ -67,4 +67,6 @@ const scrapeTopSales = async () => {
   }
 };
 
-export default scrapeTopSales;
+scrapeTopSales().then(topSellers => {
+  console.log(topSellers);
+});
