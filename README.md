@@ -94,6 +94,12 @@ URL Base:
 ## Instalação
 
 - Instale as dependencias com Npm
+
+- Caso não tenha o ts-node instalado globalmente, será necessário substituir as referências do comando pelo caminho absoluto:
+
+```bash
+  ./node_modules/.bin/ts-node
+```
   
 - no diretório raiz do projeto, usando o script Bash:
  
