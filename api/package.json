@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "handler.ts",
   "scripts": {
-    "deploy": "serverless deploy"
+    "deploy": "tsc && serverless deploy",
+    "local": "serverless invoke local -f",
+    "invoke": "serverless invoke -f"
   },
   "dependencies": {
     "aws-sdk": "^2.1603.0",

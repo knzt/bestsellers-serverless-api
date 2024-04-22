@@ -1,13 +1,20 @@
 'use strict';
 import AWS from 'aws-sdk';
-import { Product, products } from './products';
 import { v4 as uuidv4 } from 'uuid';
+import bestsellers from './products.json';
 
-const bestsellers = JSON.parse(JSON.stringify(products));
+type Product = {
+  title: string;
+  price: number;
+  rate: number;
+  url: string;
+  date: string;
+};
+
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 
 module.exports.exportBestsellers = async () => {
-  const promises = bestsellers.map((product: Product) => {
+  const promises = bestsellers.map(async (product: Product) => {
     const params = {
       TableName: process.env.DYNAMODB_TABLE as string,
       Item: {
@@ -57,7 +64,7 @@ module.exports.getBestsellers = async () => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Bestsellers table data retrieved successfully',
+        message: 'Success',
         data: data.Items,
       }),
     };
@@ -67,6 +74,45 @@ module.exports.getBestsellers = async () => {
       statusCode: 500,
       body: JSON.stringify({
         error: 'Failed to retrieve data',
+        details: error,
+      }),
+    };
+  }
+};
+
+module.exports.getProductById = async (event: {
+  pathParameters: { id: string };
+}) => {
+  const id = event.pathParameters.id;
+
+  const params = {
+    TableName: process.env.DYNAMODB_TABLE as string,
+    Key: {
+      id: id,
+    },
+  };
+
+  try {
+    const { Item } = await dynamoDb.get(params).promise();
+    if (!Item) {
+      return {
+        statusCode: 404,
+        body: JSON.stringify({ message: 'Product not found' }),
+      };
+    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: 'Success',
+        product: Item,
+      }),
+    };
+  } catch (error) {
+    console.error('Error retrieving product:', error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'Failed to retrieve product',
         details: error,
       }),
     };

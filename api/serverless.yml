@@ -5,24 +5,31 @@ provider:
   runtime: nodejs18.x
   region: us-east-1
   environment:
-    DYNAMODB_TABLE: 'bestsellers'
+    DYNAMODB_TABLE: 'bestsellers_podium'
   iam:
     role:
       statements:
         - Effect: Allow
           Action:
             - dynamodb:PutItem
+            - dynamodb:GetItem
             - dynamodb:Scan
           Resource: 'arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}'
 
 functions:
-  saveScrapeTopSalesData:
+  exportBestsellersData:
     handler: handler.exportBestsellers
   getBestsellers:
     handler: handler.getBestsellers
     events:
       - http:
           path: bestsellers
+          method: get
+  getProductById:
+    handler: handler.getProductById
+    events:
+      - http:
+          path: bestsellers/{id}
           method: get
 resources:
   Resources:
