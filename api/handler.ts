@@ -64,7 +64,7 @@ module.exports.getBestsellers = async () => {
     return {
       statusCode: 200,
       body: JSON.stringify({
-        message: 'Bestsellers table data retrieved successfully',
+        message: 'Success',
         data: data.Items,
       }),
     };

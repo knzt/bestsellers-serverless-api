@@ -5,7 +5,7 @@ provider:
   runtime: nodejs18.x
   region: us-east-1
   environment:
-    DYNAMODB_TABLE: 'bestsellers'
+    DYNAMODB_TABLE: 'bestsellers_podium'
   iam:
     role:
       statements:
