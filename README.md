@@ -58,7 +58,7 @@ Os arquivos e suas responsabilidades estão dispostos da seguinte forma:
 
 ## <a id="api-reference"> API Reference </a> 
 
-URL Base:
+URL Base (desativada atualmente para evitar custos):
 
 - https://b0vp2k74xl.execute-api.us-east-1.amazonaws.com/dev/
 
